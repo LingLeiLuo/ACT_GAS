@@ -3,8 +3,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "AbilitySystemComponent.h"
 #include "GameFramework/Character.h"
 #include "RoCharacterBase.generated.h"
+
+class URoAttributeSet;
+class URoAbilitySystemComponent;
 
 UCLASS()
 class RO_API ARoCharacterBase : public ACharacter
@@ -14,6 +18,18 @@ class RO_API ARoCharacterBase : public ACharacter
 public:
 	ARoCharacterBase();
 
+	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const;
+
 protected:
-	virtual void BeginPlay() override;
+	virtual void PossessedBy(AController* NewController) override;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="AbilitySystem")
+	URoAbilitySystemComponent* AbilitySystemComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="AbilitySystem")
+	URoAttributeSet* AttributeSet;
+
+public:
+	FORCEINLINE URoAbilitySystemComponent* GetRoAbilitySystemComponent() const { return AbilitySystemComponent; }
+	FORCEINLINE URoAttributeSet* GetRoAttributeSet() const { return AttributeSet; }
 };

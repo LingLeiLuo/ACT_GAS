@@ -6,6 +6,7 @@
 #include "Characters/RoCharacterBase.h"
 #include "RoPlayerCharacter.generated.h"
 
+class URoGameplayAbility;
 struct FInputActionValue;
 class UDataAsset_InputConfig;
 class UCameraComponent;
@@ -23,7 +24,7 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
-
+	virtual void PossessedBy(AController* NewController) override;
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 
 private:
@@ -35,6 +36,9 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "CharacterData", meta=(AllowPrivateAccess = "true"))
 	UDataAsset_InputConfig* InputConfigDA;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Ability", meta=(AllowPrivateAccess = "true"))
+	TArray<TSubclassOf<UGameplayAbility>> Abilities;
 	
 	void Input_Move(const FInputActionValue& InInputActionValue);
 	void Input_Look(const FInputActionValue& InInputActionValue);

@@ -3,15 +3,34 @@
 
 #include "Characters/RoCharacterBase.h"
 
+#include "GameplayAbility/RoAbilitySystemComponent.h"
+#include "GameplayAbility/RoAttributeSet.h"
+
 // Sets default values
 ARoCharacterBase::ARoCharacterBase()
 {
 	PrimaryActorTick.bCanEverTick = false;
+	PrimaryActorTick.bStartWithTickEnabled = false;
 
+	GetMesh()->bReceivesDecals = false;
+
+	AbilitySystemComponent = CreateDefaultSubobject<URoAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
+
+	AttributeSet = CreateDefaultSubobject<URoAttributeSet>(TEXT("AttributeSet"));
 }
 
-void ARoCharacterBase::BeginPlay()
+UAbilitySystemComponent* ARoCharacterBase::GetAbilitySystemComponent() const
 {
-	Super::BeginPlay();
+	return GetRoAbilitySystemComponent();
+}
+
+void ARoCharacterBase::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+
+	if (AbilitySystemComponent)
+	{
+		AbilitySystemComponent->InitAbilityActorInfo(this, this);
+	}
 }
 

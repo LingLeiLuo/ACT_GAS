@@ -8,8 +8,10 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "RoDebugHelper.h"
 #include "Components/Input/RoInputComponent.h"
 #include "RoGameplayTags.h"
+#include "GameplayAbility/RoAbilitySystemComponent.h"
 
 ARoPlayerCharacter::ARoPlayerCharacter()
 {
@@ -38,6 +40,25 @@ ARoPlayerCharacter::ARoPlayerCharacter()
 void ARoPlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+	for (const TSubclassOf<UGameplayAbility>& Ability : Abilities)
+	{
+		FGameplayAbilitySpec AbilitySpec(Ability);
+		AbilitySpec.SourceObject = GetAbilitySystemComponent()->GetAvatarActor();
+		AbilitySpec.Level = 1;
+		
+		GetRoAbilitySystemComponent()->GiveAbility(AbilitySpec);
+	}
+}
+
+void ARoPlayerCharacter::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+
+	if (AbilitySystemComponent && AttributeSet)
+	{
+		DebugHelper::Log(TEXT("Ability System component valid"));
+	}
 }
 
 void ARoPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)

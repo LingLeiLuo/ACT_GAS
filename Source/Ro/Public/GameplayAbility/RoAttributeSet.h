@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Abilities/GameplayAbility.h"
-#include "RoGameplayAbility.generated.h"
+#include "AttributeSet.h"
+#include "RoAttributeSet.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class RO_API URoGameplayAbility : public UGameplayAbility
+class RO_API URoAttributeSet : public UAttributeSet
 {
 	GENERATED_BODY()
 	
