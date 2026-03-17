@@ -11,7 +11,7 @@ namespace RoGameplayTags
 	
 	UE_DEFINE_GAMEPLAY_TAG(Input_LMB, "Input.LMB");
 	UE_DEFINE_GAMEPLAY_TAG(Input_RMB, "Input.RMB");
-	UE_DEFINE_GAMEPLAY_TAG(Input_Shift, "Input.RMB");
+	UE_DEFINE_GAMEPLAY_TAG(Input_Shift, "Input.Shift");
 	
 	
 	UE_DEFINE_GAMEPLAY_TAG(Ability_NormalAttack_A, "Ability.NormalAttack.A");
