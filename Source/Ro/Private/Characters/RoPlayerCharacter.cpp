@@ -87,6 +87,8 @@ void ARoPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 												ETriggerEvent::Triggered, this, &ThisClass::Input_Move);
 	ActionInputComponent->BindNativeInputAction(InputConfigDA, RoGameplayTags::Input_Look,
 												ETriggerEvent::Triggered, this, &ThisClass::Input_Look);
+	ActionInputComponent->BindNativeInputAction(InputConfigDA, RoGameplayTags::Input_Ctrl,
+												ETriggerEvent::Started, this, &ThisClass::Input_Ctrl);
 
 	ActionInputComponent->BindAbilityInputAction(InputConfigDA, this, &ThisClass::InputAbilityInputPressed, &ThisClass::InputAbilityInputReleased);
 }
@@ -107,6 +109,12 @@ void ARoPlayerCharacter::Input_Move(const FInputActionValue& InInputActionValue)
 		const FVector RightVector = MoveRotation.RotateVector(FVector::RightVector);
 		AddMovementInput(RightVector, MoveVector.X);
 	}
+
+	// 广播移动输入委托
+	if (MoveVector.X != 0.f || MoveVector.Y != 0.f)
+	{
+		OnMoveInputDelegate.Broadcast(MoveVector);
+	}
 }
 
 void ARoPlayerCharacter::Input_Look(const FInputActionValue& InInputActionValue)
@@ -122,6 +130,21 @@ void ARoPlayerCharacter::Input_Look(const FInputActionValue& InInputActionValue)
 	{
 		AddControllerPitchInput(LookVector.Y);
 	}
+}
+
+void ARoPlayerCharacter::Input_Ctrl(const FInputActionValue& InInputActionValue)
+{
+	WalkOrRun = !WalkOrRun;
+	
+	if (!WalkOrRun)
+	{
+		GetCharacterMovement()->MaxWalkSpeed = RunSpeed;
+	}
+	else
+	{
+		GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
+	}
+	
 }
 
 void ARoPlayerCharacter::InputAbilityInputPressed(FGameplayTag InInputTag)

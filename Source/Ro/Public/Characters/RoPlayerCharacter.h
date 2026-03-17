@@ -14,6 +14,10 @@ struct FInputActionValue;
 class UDataAsset_InputConfig;
 class UCameraComponent;
 class USpringArmComponent;
+
+// 移动输入委托声明
+DECLARE_MULTICAST_DELEGATE_OneParam(FRoOnMoveInputDelegate, const FVector2D&);
+
 /**
  * 
  */
@@ -24,6 +28,9 @@ class RO_API ARoPlayerCharacter : public ARoCharacterBase
 
 public:
 	ARoPlayerCharacter();
+
+	// 移动输入委托
+	FRoOnMoveInputDelegate OnMoveInputDelegate;
 
 protected:
 	virtual void BeginPlay() override;
@@ -48,6 +55,7 @@ private:
 	
 	void Input_Move(const FInputActionValue& InInputActionValue);
 	void Input_Look(const FInputActionValue& InInputActionValue);
+	void Input_Ctrl(const FInputActionValue& InInputActionValue);
 
 	void InputAbilityInputPressed(FGameplayTag InInputTag);
 	void InputAbilityInputReleased(FGameplayTag InInputTag);
@@ -55,6 +63,15 @@ private:
 public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Input")
 	FGameplayTag CanPreInputTag;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category="Input")
+	bool WalkOrRun;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="CharacterData")
+	float WalkSpeed = 150.f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="CharacterData")
+	float RunSpeed = 400.f;
 	
 	FORCEINLINE URoPlayerCombatComponent* GetCombatComponent() const { return CombatComponent; }
 
