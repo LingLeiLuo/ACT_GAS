@@ -31,6 +31,8 @@ void ARoCharacterBase::PossessedBy(AController* NewController)
 	if (AbilitySystemComponent)
 	{
 		AbilitySystemComponent->InitAbilityActorInfo(this, this);
+
+		ensure(!CharacterStartUpData.IsNull());
 	}
 }
 

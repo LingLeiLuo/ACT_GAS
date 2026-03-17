@@ -4,6 +4,8 @@
 #include "GameplayAbility/GA/RoGameplayAbility.h"
 
 #include "AbilitySystemComponent.h"
+#include "Components/Combat/RoCombatComponent.h"
+#include "GameplayAbility/RoAbilitySystemComponent.h"
 
 void URoGameplayAbility::OnGiveAbility(const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilitySpec& Spec)
 {
@@ -30,4 +32,14 @@ void URoGameplayAbility::EndAbility(const FGameplayAbilitySpecHandle Handle, con
 			ActorInfo->AbilitySystemComponent->ClearAbility(Handle);
 		}
 	}
+}
+
+URoCombatComponent* URoGameplayAbility::GetCombatComponentFromActorInfo() const
+{
+	return GetAvatarActorFromActorInfo()->FindComponentByClass<URoCombatComponent>();
+}
+
+URoAbilitySystemComponent* URoGameplayAbility::GetRoAbilitySystemComponentFromActorInfo() const
+{
+	return Cast<URoAbilitySystemComponent>(CurrentActorInfo->AbilitySystemComponent);
 }

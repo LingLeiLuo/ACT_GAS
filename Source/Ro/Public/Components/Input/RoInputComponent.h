@@ -28,4 +28,21 @@ public:
 			BindAction(FoundAction, TriggerEvent, ContextObject, InCallbackFunc);
 		}
 	}
+
+	template <class UserObject, typename CallbackFunc>
+	void BindAbilityInputAction(const UDataAsset_InputConfig* InInputConfig, UserObject* ContextObject, CallbackFunc InputPressFunc, CallbackFunc InputReleaseFunc)
+	{
+		checkf(InInputConfig, TEXT("Input Config Data Asset is null"));
+
+		for (const FRoInputActionConfig& ActionConfig : InInputConfig->AbilityInputActions)
+		{
+			if (!ActionConfig.IsValid())
+			{
+				continue;
+			}
+
+			BindAction(ActionConfig.InputAction, ETriggerEvent::Started, ContextObject, InputPressFunc, ActionConfig.InputTag);
+			BindAction(ActionConfig.InputAction, ETriggerEvent::Completed, ContextObject, InputReleaseFunc, ActionConfig.InputTag);
+		}
+	}
 };

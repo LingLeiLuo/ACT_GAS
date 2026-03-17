@@ -13,5 +13,8 @@ UCLASS()
 class RO_API URoAbilitySystemComponent : public UAbilitySystemComponent
 {
 	GENERATED_BODY()
-	
+
+public:
+	void OnAbilityInputPressed(const FGameplayTag& InputTag);
+	void OnAbilityInputReleased(const FGameplayTag& InputTag);
 };

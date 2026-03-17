@@ -11,6 +11,8 @@
 #include "RoDebugHelper.h"
 #include "Components/Input/RoInputComponent.h"
 #include "RoGameplayTags.h"
+#include "Components/Combat/RoPlayerCombatComponent.h"
+#include "DataAssets/StartUpData/DataAsset_StartUpDataBase.h"
 #include "GameplayAbility/RoAbilitySystemComponent.h"
 
 ARoPlayerCharacter::ARoPlayerCharacter()
@@ -35,29 +37,34 @@ ARoPlayerCharacter::ARoPlayerCharacter()
 	GetCharacterMovement()->RotationRate = FRotator(0.f, 500.f, 0.f);
 	GetCharacterMovement()->MaxWalkSpeed = 400.f;
 	GetCharacterMovement()->BrakingDecelerationWalking = 2000.f;
+
+	CombatComponent = CreateDefaultSubobject<URoPlayerCombatComponent>(TEXT("PlayerCombatComponent"));
 }
 
 void ARoPlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	for (const TSubclassOf<UGameplayAbility>& Ability : Abilities)
-	{
-		FGameplayAbilitySpec AbilitySpec(Ability);
-		AbilitySpec.SourceObject = GetAbilitySystemComponent()->GetAvatarActor();
-		AbilitySpec.Level = 1;
-		
-		GetRoAbilitySystemComponent()->GiveAbility(AbilitySpec);
-	}
+	// for (const TSubclassOf<UGameplayAbility>& Ability : Abilities)
+	// {
+	// 	FGameplayAbilitySpec AbilitySpec(Ability);
+	// 	AbilitySpec.SourceObject = GetAbilitySystemComponent()->GetAvatarActor();
+	// 	AbilitySpec.Level = 1;
+	// 	
+	// 	GetRoAbilitySystemComponent()->GiveAbility(AbilitySpec);
+	// }
 }
 
 void ARoPlayerCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
 
-	if (AbilitySystemComponent && AttributeSet)
+	if (!CharacterStartUpData.IsNull())
 	{
-		DebugHelper::Log(TEXT("Ability System component valid"));
+		if (UDataAsset_StartUpDataBase* StartUpData = CharacterStartUpData.LoadSynchronous())
+		{
+			StartUpData->GiveToAbilitySystemComponent(AbilitySystemComponent);
+		}
 	}
 }
 
@@ -80,6 +87,8 @@ void ARoPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 												ETriggerEvent::Triggered, this, &ThisClass::Input_Move);
 	ActionInputComponent->BindNativeInputAction(InputConfigDA, RoGameplayTags::Input_Look,
 												ETriggerEvent::Triggered, this, &ThisClass::Input_Look);
+
+	ActionInputComponent->BindAbilityInputAction(InputConfigDA, this, &ThisClass::InputAbilityInputPressed, &ThisClass::InputAbilityInputReleased);
 }
 
 void ARoPlayerCharacter::Input_Move(const FInputActionValue& InInputActionValue)
@@ -113,6 +122,16 @@ void ARoPlayerCharacter::Input_Look(const FInputActionValue& InInputActionValue)
 	{
 		AddControllerPitchInput(LookVector.Y);
 	}
+}
+
+void ARoPlayerCharacter::InputAbilityInputPressed(FGameplayTag InInputTag)
+{
+	AbilitySystemComponent->OnAbilityInputPressed(InInputTag);
+}
+
+void ARoPlayerCharacter::InputAbilityInputReleased(FGameplayTag InInputTag)
+{
+	AbilitySystemComponent->OnAbilityInputReleased(InInputTag);
 }
 
 

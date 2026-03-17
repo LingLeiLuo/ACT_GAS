@@ -7,6 +7,7 @@
 #include "GameFramework/Character.h"
 #include "RoCharacterBase.generated.h"
 
+class UDataAsset_StartUpDataBase;
 class URoAttributeSet;
 class URoAbilitySystemComponent;
 
@@ -29,6 +30,9 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="AbilitySystem")
 	URoAttributeSet* AttributeSet;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="CharacterData")
+	TSoftObjectPtr<UDataAsset_StartUpDataBase> CharacterStartUpData;
+	
 public:
 	FORCEINLINE URoAbilitySystemComponent* GetRoAbilitySystemComponent() const { return AbilitySystemComponent; }
 	FORCEINLINE URoAttributeSet* GetRoAttributeSet() const { return AttributeSet; }

@@ -17,7 +17,7 @@ class RO_API UDataAsset_StartUpDataBase : public UDataAsset
 	GENERATED_BODY()
 
 public:
-	virtual void GiveToAbilitySystemComponent(URoAbilitySystemComponent* InAbilitySystemComponent, int32 InLevel);
+	virtual void GiveToAbilitySystemComponent(URoAbilitySystemComponent* InAbilitySystemComponent, int32 InLevel = 1);
 	
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "StartUpData")
@@ -26,5 +26,5 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "StartUpData")
 	TArray<TSubclassOf<URoGameplayAbility>> ReactiveOnGivenAbilities;
 
-	static void GrantAbilities(const TArray<TSubclassOf<URoGameplayAbility>>& InAbilities, URoAbilitySystemComponent* InAbilitySystemComponent, int32 InLevel);
+	static void GrantAbilities(const TArray<TSubclassOf<URoGameplayAbility>>& InAbilities, URoAbilitySystemComponent* InAbilitySystemComponent, int32 InLevel = 1);
 };
