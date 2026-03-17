@@ -4,8 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "Characters/RoCharacterBase.h"
+#include "Components/Input/RoInputComponent.h"
 #include "RoPlayerCharacter.generated.h"
 
+class URoInputComponent;
 class URoPlayerCombatComponent;
 class URoGameplayAbility;
 struct FInputActionValue;
@@ -51,5 +53,14 @@ private:
 	void InputAbilityInputReleased(FGameplayTag InInputTag);
 
 public:
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Input")
+	FGameplayTag CanPreInputTag;
+	
 	FORCEINLINE URoPlayerCombatComponent* GetCombatComponent() const { return CombatComponent; }
+
+	UFUNCTION(BlueprintCallable, Category = "Input")
+	FORCEINLINE bool GetCanPreInput() const { return Cast<URoInputComponent>(InputComponent)->bCanPreInput; }
+
+	UFUNCTION(BlueprintCallable, Category = "Input")
+	FORCEINLINE void SetCanPreInput(bool bInCanPreInput) const { Cast<URoInputComponent>(InputComponent)->bCanPreInput = bInCanPreInput; }
 };

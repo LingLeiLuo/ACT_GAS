@@ -11,14 +11,16 @@ namespace RoGameplayTags
 
 	RO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Input_LMB);
 	RO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Input_RMB);
+	RO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Input_Shift);
 
 
 	// 技能Tag
-	RO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Ability_NormalAttack_Attacking_Index0);
-	RO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Ability_NormalAttack_Attacking_Index1);
-	RO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Ability_NormalAttack_Attacking_Index2);
-	RO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Ability_NormalAttack_Attacking_Index3);
-	
+	RO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Ability_NormalAttack_A);
+	RO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Ability_NormalAttack_B);
+	RO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Ability_NormalAttack_C);
+	RO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Ability_NormalAttack_D);
 	RO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Ability_NormalAttack_Window);
+	
+
 	
 }

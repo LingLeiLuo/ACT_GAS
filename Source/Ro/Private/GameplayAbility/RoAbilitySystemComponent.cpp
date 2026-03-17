@@ -4,6 +4,8 @@
 #include "GameplayAbility/RoAbilitySystemComponent.h"
 
 #include "RoDebugHelper.h"
+#include "Characters/RoPlayerCharacter.h"
+#include "RoGameplayTags.h"
 
 void URoAbilitySystemComponent::OnAbilityInputPressed(const FGameplayTag& InputTag)
 {
@@ -12,6 +14,8 @@ void URoAbilitySystemComponent::OnAbilityInputPressed(const FGameplayTag& InputT
 		return;
 	}
 
+	ARoPlayerCharacter* PlayerCharacter = Cast<ARoPlayerCharacter>(GetOwner());
+	
 	for (const FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
 	{
 		// DebugHelper::Log(TEXT("AbilitySpec.DynamicAbilityTags"));
@@ -19,6 +23,11 @@ void URoAbilitySystemComponent::OnAbilityInputPressed(const FGameplayTag& InputT
 		{
 			// DebugHelper::Log(TEXT("TryActivateAbility"));
 			TryActivateAbility(AbilitySpec.Handle);
+			
+			if (PlayerCharacter->GetCanPreInput())
+			{
+				PlayerCharacter->CanPreInputTag = InputTag;
+			}
 		}
 	}
 		

@@ -16,6 +16,10 @@ class RO_API URoInputComponent : public UEnhancedInputComponent
 	GENERATED_BODY()
 
 public:
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Input")
+	bool bCanPreInput;
+	
 	template <class UserObject, typename CallbackFunc>
 	void BindNativeInputAction(const UDataAsset_InputConfig* InInputConfig, const FGameplayTag& InInputTag,
 	                                  ETriggerEvent TriggerEvent, UserObject* ContextObject,
